@@ -1,34 +1,27 @@
+"use client"
+
 import "@/styles/globals.css";
-import { Metadata } from "next";
-import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
 import clsx from "clsx";
 import React from "react";
-
-export const metadata: Metadata = {
-	title: {
-		default: siteConfig.name,
-		template: `%s - ${siteConfig.name}`,
-	},
-	description: siteConfig.description,
-	themeColor: [
-		{ media: "(prefers-color-scheme: light)", color: "white" },
-		{ media: "(prefers-color-scheme: dark)", color: "black" },
-	],
-	icons: {
-		icon: "/favicon.ico",
-		shortcut: "/favicon-16x16.png",
-		apple: "/apple-touch-icon.png",
-	},
-};
+import {createConfig, mainnet, WagmiConfig} from "wagmi";
+import {createPublicClient, http} from "viem";
 
 export default function RootLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
+	const config = createConfig({
+		autoConnect: true,
+		publicClient: createPublicClient({
+			chain: mainnet,
+			transport: http()
+		}),
+	})
+
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head />
@@ -39,12 +32,14 @@ export default function RootLayout({
 				)}
 			>
 				<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-					<div className="relative flex flex-col h-screen">
-						<Navbar />
-						<main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
-							{children}
-						</main>
-					</div>
+					<WagmiConfig config={config}>
+						<div className="relative flex flex-col h-screen">
+							<Navbar />
+							<main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+								{children}
+							</main>
+						</div>
+					</WagmiConfig>
 				</Providers>
 			</body>
 		</html>
