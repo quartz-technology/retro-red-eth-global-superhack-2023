@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
+import { TransactionModule } from './transaction/transaction.module';
+import { BlockModule } from './block/block.module';
 import appConfig from './config/app';
 import databaseConfig from './config/database';
 
@@ -13,8 +14,9 @@ import databaseConfig from './config/database';
       isGlobal: true,
     }),
     DatabaseModule,
+    TransactionModule,
+    BlockModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
