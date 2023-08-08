@@ -1,0 +1,41 @@
+version: "3"
+services:
+  backend:
+    build: backend
+    container_name: backend
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    networks:
+      - db-service
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:latest
+    container_name: db
+    ports:
+      - "3306:${DB_PORT}"
+    environment: 
+      MARIADB_ROOT_PASSWORD: ${DB_PASS}
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+    networks:
+      - db-service
+    volumes:
+      - maria-data:/data/db
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:${ADMINER_PORT}"
+    networks:
+      - db-service
+
+networks:
+  db-service:
+    driver: bridge
+
+volumes:
+  maria-data:
+    driver: local
