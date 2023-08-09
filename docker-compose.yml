@@ -6,12 +6,17 @@ services:
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
     environment:
-      DB_HOST: ${DB_HOST}
+      DB_HOST: mariadb
       DB_PORT: ${DB_PORT}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
       DB_NAME: ${DB_NAME}
       PORT: ${BACKEND_PORT}
+      INDEXER_ENABLED: ${INDEXER_ENABLED}
+      INDEXER_START_BLOCK: ${INDEXER_START_BLOCK}
+      INDEXER_END_BLOCK: ${INDEXER_END_BLOCK}
+      INDEXER_BATCH_SIZE: ${INDEXER_BATCH_SIZE}
+      INDEXER_JSON_RPC_URL: ${INDEXER_JSON_RPC_URL}
     networks:
       - db-service
     depends_on:
@@ -38,6 +43,8 @@ services:
       - "8080:${ADMINER_PORT}"
     networks:
       - db-service
+    depends_on:
+      - mariadb
 
 networks:
   db-service:

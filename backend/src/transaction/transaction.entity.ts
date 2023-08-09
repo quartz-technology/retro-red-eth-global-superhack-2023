@@ -11,8 +11,11 @@ export class TransactionEntity {
   @Column()
   to: string;
 
-  @Column('bigint')
+  @Column()
   gasUsed: string;
+
+  @Column()
+  value: string;
 
   @Column()
   blockHash: string;

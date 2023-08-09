@@ -6,7 +6,7 @@ export class BlockEntity {
   @PrimaryColumn()
   hash: string;
 
-  @Column('int')
+  @Column({ type: 'int', unique: true })
   number: number;
 
   @Column('int')
