@@ -15,12 +15,14 @@ export class TransactionService {
     from,
     to,
     gasUsed,
+    value,
     blockHash,
   }: {
     hash: string;
     from: string;
     to: string;
     gasUsed: string;
+    value: string;
     blockHash: string;
   }) {
     await this.transactionRepository.save({
@@ -28,6 +30,7 @@ export class TransactionService {
       from,
       to,
       gasUsed,
+        value,
       blockHash,
     });
   }
