@@ -59,9 +59,9 @@ export class IndexerService implements OnModuleInit {
           });
 
           for (const transaction of transactions) {
-            const { hash, from, to, gas, value } = transaction;
+            const { hash, from, to, gas, value, input } = transaction;
 
-            if (!to) continue;
+            if (!to || input != '0x') continue;
 
             await this.transactionService.create({
               hash,
