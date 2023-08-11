@@ -16,7 +16,7 @@ export class ProjectService {
     defiLLamaId,
     addresses,
     totalTransactions,
-    weiUsed,
+    gasUsed,
     tvl,
     githubStars,
     githubActivity,
@@ -28,7 +28,7 @@ export class ProjectService {
     defiLLamaId?: string;
     addresses?: string[];
     totalTransactions?: number;
-    weiUsed?: string;
+    gasUsed?: string;
     tvl?: number;
     githubStars?: number;
     githubActivity?: number;
@@ -41,7 +41,7 @@ export class ProjectService {
       defiLLamaId,
       addresses,
       totalTransactions,
-      weiUsed,
+      gasUsed,
       tvl,
       githubStars,
       githubActivity,
