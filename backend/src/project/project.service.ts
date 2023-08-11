@@ -12,7 +12,7 @@ export class ProjectService {
 
   async create({
     name,
-    githubRepo,
+    githubRepos,
     defiLLamaId,
     addresses,
     totalTransactions,
@@ -24,7 +24,7 @@ export class ProjectService {
     upvotes,
   }: {
     name?: string;
-    githubRepo?: string;
+    githubRepos?: string[];
     defiLLamaId?: string;
     addresses?: string[];
     totalTransactions?: number;
@@ -37,7 +37,7 @@ export class ProjectService {
   }) {
     await this.projectRepository.save({
       name,
-      githubRepo,
+      githubRepos,
       defiLLamaId,
       addresses,
       totalTransactions,
@@ -54,11 +54,19 @@ export class ProjectService {
     return await this.projectRepository.findOneBy({ id });
   }
 
+  async findOneByAddress(address: string) {
+    return await this.projectRepository.findOneBy({ addresses: address });
+  }
+
   async findAll() {
     return await this.projectRepository.find();
   }
 
   async update(id: number, project: ProjectEntity) {
     await this.projectRepository.update(id, project);
+  }
+
+  async deleteByAddress(address: string) {
+    await this.projectRepository.delete({ addresses: address });
   }
 }

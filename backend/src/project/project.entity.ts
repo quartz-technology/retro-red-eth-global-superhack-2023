@@ -8,14 +8,14 @@ export class ProjectEntity {
   @Column({ nullable: true })
   name?: string;
 
-  @Column({ nullable: true })
-  githubRepo?: string;
+  @Column({ nullable: true, type: 'simple-array' })
+  githubRepos?: string[];
 
   @Column({ nullable: true })
   defiLLamaId?: string;
 
-  @Column({ nullable: true, type: 'simple-array' })
-  addresses?: string[];
+  @Column({ type: 'simple-array', nullable: true })
+  addresses: string[];
 
   @Column({ nullable: true })
   totalTransactions?: number;
@@ -35,6 +35,6 @@ export class ProjectEntity {
   @Column({ nullable: true })
   easAttestation?: string;
 
-  @Column({ nullable: true })
-  upvotes?: number;
+  @Column({ nullable: true, default: 0 })
+  upvotes: number;
 }
