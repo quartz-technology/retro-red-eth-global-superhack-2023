@@ -30,7 +30,7 @@ export class TransactionService {
       from,
       to,
       gasUsed,
-        value,
+      value,
       blockHash,
     });
   }
@@ -49,5 +49,36 @@ export class TransactionService {
         blockHash,
       },
     });
+  }
+
+  async countByContractAddress(contractAddress: string) {
+    return await this.transactionRepository.count({
+      where: {
+        to: contractAddress,
+      },
+    });
+  }
+
+  async sumGasUsedByContractAddress(contractAddress: string): Promise<bigint> {
+    const gasUsed = await this.transactionRepository
+      .createQueryBuilder('transaction')
+      .select('transaction.gasUsed')
+      .where('transaction.to = :contractAddress', { contractAddress })
+      .getRawMany();
+
+    return gasUsed.reduce(
+      (acc, cur) => acc + BigInt(cur.transaction_gasUsed),
+      0n,
+    );
+  }
+
+  async getUniqueContracts() {
+    return (
+      await this.transactionRepository
+        .createQueryBuilder('transaction')
+        .select('transaction.to')
+        .distinct(true)
+        .getRawMany()
+    ).map((item) => item.transaction_to);
   }
 }

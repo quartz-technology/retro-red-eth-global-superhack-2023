@@ -75,7 +75,7 @@ export class IndexerService implements OnModuleInit {
           console.log(`Block ${number} indexed`);
         }
       }
+      console.log('Indexer stopped');
     }
-    console.log('Indexer stopped');
   }
 }

@@ -5,36 +5,36 @@ export class ProjectEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   name?: string;
 
-  @Column()
+  @Column({ nullable: true })
   githubRepo?: string;
 
-  @Column()
+  @Column({ nullable: true })
   defiLLamaId?: string;
 
-  @Column('simple-array')
+  @Column({ nullable: true, type: 'simple-array' })
   addresses?: string[];
 
-  @Column()
+  @Column({ nullable: true })
   totalTransactions?: number;
 
-  @Column()
-  weiUsed?: string;
+  @Column({ nullable: true })
+  gasUsed?: string;
 
-  @Column()
+  @Column({ nullable: true })
   tvl?: number;
 
-  @Column()
+  @Column({ nullable: true })
   githubStars?: number;
 
-  @Column()
+  @Column({ nullable: true })
   githubActivity?: number;
 
-  @Column()
+  @Column({ nullable: true })
   easAttestation?: string;
 
-  @Column()
+  @Column({ nullable: true })
   upvotes?: number;
 }
