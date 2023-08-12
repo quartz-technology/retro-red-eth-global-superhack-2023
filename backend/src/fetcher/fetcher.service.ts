@@ -41,14 +41,14 @@ export class FetcherService implements OnModuleInit {
         }
 
         if (addresses !== undefined && addresses.length > 0) {
-          for (let i = 1; i < addresses.length; ++i) {
+          for (let i = 0; i < addresses.length; ++i) {
             totalTransactions +=
               await this.transactionService.countByContractAddress(
-                addresses[i].toLowerCase(),
+                addresses[i],
               );
             gasUsed +=
               await this.transactionService.sumGasUsedByContractAddress(
-                addresses[i].toLowerCase(),
+                addresses[i],
               );
           }
         }
