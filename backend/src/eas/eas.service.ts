@@ -14,8 +14,12 @@ export class EasService {
 
     const jsonRpcUrl = this.configService.get('indexer.jsonRpcUrl');
     const provider = new ethers.JsonRpcProvider(jsonRpcUrl);
+    const signer = new ethers.Wallet(
+      this.configService.get('indexer.privateKey'),
+      provider,
+    );
 
-    this.eas.connect(provider);
+    this.eas.connect(signer);
   }
 
   async attestProject({
