@@ -23,7 +23,7 @@ export class FetcherService implements OnModuleInit {
       const contracts = await this.transactionService.getUniqueContracts();
 
       for (const contract of contracts) {
-        console.log('Fetching on chain data', contract)
+        console.log('Fetching on chain data', contract);
         const totalTransactions =
           await this.transactionService.countByContractAddress(contract);
         const gasUsed =
