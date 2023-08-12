@@ -1,6 +1,7 @@
 import axios, {AxiosInstance} from "axios";
 import {ProjectsDetails} from "@/components/projectDetailsModal";
 import {ethers} from "ethers";
+import {EAS} from "@ethereum-attestation-service/eas-sdk";
 
 declare global {
     interface Window {
@@ -61,9 +62,7 @@ class RetroRedSDK {
             headers: this.gitCoinHeaders,
         })
 
-
         return await response.json() as SigningMessageRO;
-
     }
 
     async submitPassport(address: string) {
@@ -125,6 +124,16 @@ class RetroRedSDK {
 
             return null;
         }
+    }
+
+    async getProjectScore(attestationUID: string) {
+        const EASContractAddress = '0x4200000000000000000000000000000000000021';
+        const eas = new EAS(EASContractAddress);
+        const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_DEFAULT_RPC_URL);
+        eas.connect(provider);
+
+        const attestation = await eas.getAttestation(attestationUID);
+        return Number("0x" + attestation.data.slice(66, 66 + 64));
     }
 }
 
