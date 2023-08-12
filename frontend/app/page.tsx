@@ -15,6 +15,7 @@ import {Spacer} from "@nextui-org/spacer";
 import {Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/dropdown";
 import {Divider} from "@nextui-org/divider";
 import {Link} from "@nextui-org/link";
+import RetroRedSDK from "@/app/sdk";
 
 export default function Home() {
 	const [selectedKeys, setSelectedKeys] = React.useState(new Set(["score"]));
@@ -22,62 +23,18 @@ export default function Home() {
 		() => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
 		[selectedKeys]
 	);
-
 	const disclosure = useDisclosure();
-	const projects: ProjectsDetails[] = [
-		{
-			easLink: "string",
-			name: "ethers.js",
-			githubRepositoryURL: "string",
-			defiLlamaID: "string",
-			contractAddresses: ["string"],
-			totalTransactionsCount: 42,
-			gasUsed: 42,
-			tvl: 42,
-			githubStars: 42,
-			githubActivity: 42,
-			upvotes: 42,
-		},
-		{
-			easLink: "string",
-			name: "uniswap",
-			githubRepositoryURL: "string",
-			defiLlamaID: "string",
-			contractAddresses: ["string"],
-			totalTransactionsCount: 42,
-			gasUsed: 42,
-			tvl: 42,
-			githubStars: 42,
-			githubActivity: 42,
-			upvotes: 42,
-		},
-		{
-			easLink: "string",
-			name: "curve",
-			githubRepositoryURL: "string",
-			defiLlamaID: "string",
-			contractAddresses: ["string"],
-			totalTransactionsCount: 42,
-			gasUsed: 42,
-			tvl: 42,
-			githubStars: 42,
-			githubActivity: 42,
-			upvotes: 42,
-		},
-		{
-			easLink: "string",
-			name: "arken.fi",
-			githubRepositoryURL: "string",
-			defiLlamaID: "string",
-			contractAddresses: ["string"],
-			totalTransactionsCount: 42,
-			gasUsed: 42,
-			tvl: 42,
-			githubStars: 42,
-			githubActivity: 42,
-			upvotes: 42,
-		},
-	];
+
+	const [projects, setProjects] = React.useState<ProjectsDetails[]>([]);
+	const [selectedProject, setSelectedProject] = React.useState(0);
+
+	React.useEffect(() => {
+		(async () => {
+			const sdk = new RetroRedSDK();
+
+			setProjects(await sdk.getProjects() ?? []);
+		})();
+	}, []);
 
 	return (
 		<div>
@@ -130,7 +87,10 @@ export default function Home() {
 								<CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
 									<p className="text-medium font-bold text-white/80">{props.name}</p>
 									<p className="text-medium font-bold text-white/80">{props.upvotes} ❤️</p>
-									<Button className="text-sm text-white bg-black/20" variant="flat" color="default" radius="lg" size="sm" onClick={disclosure.onOpen}>
+									<Button className="text-sm text-white bg-black/20" variant="flat" color="default" radius="lg" size="sm" onClick={() => {
+										disclosure.onOpen();
+										setSelectedProject(id);
+									}}>
 										Discover More
 									</Button>
 								</CardFooter>
@@ -139,7 +99,7 @@ export default function Home() {
 				})}
 				<ProjectDetailsModal
 					visibilityProps={disclosure}
-					details={projects[0]}
+					details={projects[selectedProject]}
 				/>
 			</div>
 		</div>
