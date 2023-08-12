@@ -12,6 +12,8 @@ import {IdentityIcon} from "@/components/icons";
 import {Spacer} from "@nextui-org/spacer";
 import {Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/dropdown";
 import {Divider} from "@nextui-org/divider";
+import RetroRedSDK from "@/app/sdk";
+import { saveAs } from 'file-saver';
 
 export default function Home() {
 	const [selectedKeys, setSelectedKeys] = React.useState(new Set(["upvotes"]));
@@ -25,76 +27,13 @@ export default function Home() {
 	const [selectedProject, setSelectedProject] = React.useState(0);
 
 	React.useEffect(() => {
-		/*
 		(async () => {
 			const sdk = new RetroRedSDK();
 
-			setProjects(await sdk.getProjects() ?? []);
+			setProjects((await sdk.getProjects())?.sort((a, b) => {
+				return b.upvotes - a.upvotes;
+			}) ?? []);
 		})();
-		*/
-		let data = [
-			{
-				id: 0,
-				easAttestation: "string",
-				name: "ethers.js",
-				githubRepos: ["string"],
-				defiLlamaId: "string",
-				addresses: ["string"],
-				totalTransactions: 42,
-				gasUsed: 42,
-				tvl: 42,
-				githubStars: 42,
-				githubActivity: 42,
-				upvotes: 42,
-			},
-			{
-				id: 1,
-				easAttestation: "string",
-				name: "arken.fi",
-				githubRepos: ["string"],
-				defiLlamaId: "string",
-				addresses: ["string"],
-				totalTransactions: 42,
-				gasUsed: 42,
-				tvl: 42,
-				githubStars: 42,
-				githubActivity: 42,
-				upvotes: 84,
-			},
-			{
-				id: 2,
-				easAttestation: "string",
-				name: "uniswap",
-				githubRepos: ["string"],
-				defiLlamaId: "string",
-				addresses: ["string"],
-				totalTransactions: 42,
-				gasUsed: 42,
-				tvl: 42,
-				githubStars: 42,
-				githubActivity: 42,
-				upvotes: 0,
-			},
-			{
-				id: 3,
-				easAttestation: "string",
-				name: "foundry",
-				githubRepos: ["string"],
-				defiLlamaId: "string",
-				addresses: ["string"],
-				totalTransactions: 42,
-				gasUsed: 42,
-				tvl: 42,
-				githubStars: 42,
-				githubActivity: 42,
-				upvotes: 12,
-			},
-		];
-
-		data = data.sort((a, b) => {
-			return b.upvotes - a.upvotes;
-		});
-		setProjects(data);
 	}, []);
 
 	return (
@@ -135,7 +74,11 @@ export default function Home() {
 						</DropdownMenu>
 					</Dropdown>
 				</div>
-				<Button color={"primary"} variant={"bordered"}>
+				<Button color={"primary"} variant={"bordered"} onClick={() => {
+					const blob = new Blob([JSON.stringify(projects, null, 2)], {type: "text/plain;charset=utf-8"});
+
+					saveAs(blob, "retro-red-bulk-data.json");
+				}}>
 					Download Bulk Data
 				</Button>
 			</div>
