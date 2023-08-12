@@ -18,6 +18,7 @@ services:
       INDEXER_BATCH_SIZE: ${INDEXER_BATCH_SIZE}
       INDEXER_JSON_RPC_URL: ${INDEXER_JSON_RPC_URL}
       FETCHER_ENABLED: ${FETCHER_ENABLED}
+      FETCHER_GITHUB_TOKEN: ${FETCHER_GITHUB_TOKEN}
     networks:
       - db-service
     depends_on:
