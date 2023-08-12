@@ -40,12 +40,19 @@ export interface ProjectDetailsModalProps {
 }
 
 export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
-    const sdk = new RetroRedSDK();
+    const [sdk, setSDK] = React.useState(new RetroRedSDK());
+    const [projectScore, setProjectScore] = React.useState(0);
     const { address, isConnected } = useAccount();
 
-    const getProjectScore = () => {
-        return 42;
-    };
+    React.useEffect(() => {
+        if (props.details) {
+            (async () => {
+                const score = await sdk.getProjectScore(props.details.easAttestation);
+                setProjectScore(score);
+            })();
+        }
+    }, [props, sdk]);
+
     const onLike = async () => {
         if (address) {
             const score = await sdk.getScore(address);
@@ -67,7 +74,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                             <ModalHeader className="flex flex-col gap-1">{props.details.name}</ModalHeader>
                             <Divider />
                             <ModalBody>
-                                <p className={"text-center font-bold text-2xl m-3"}>✨ Score: {getProjectScore()}</p>
+                                <p className={"text-center font-bold text-2xl m-3"}>✨ Score: {projectScore}</p>
                                 <div className={"flex justify-center items-center mb-3"}>
                                     <Image
                                         className={"border-2 p-1 rounded-full border-blue-500"}
@@ -79,7 +86,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                         className={"font-bold text-medium"}
                                         isExternal
                                         showAnchorIcon
-                                        href={`${props.details.easAttestation}`}
+                                        href={`https://optimism-goerli-bedrock.easscan.org/attestation/view/${props.details.easAttestation}`}
                                     >
                                         View on-chain score attestation.
                                     </Link>
