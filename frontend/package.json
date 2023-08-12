@@ -39,6 +39,7 @@
     "encoding": "^0.1.13",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.4",
+    "ethers": "^6.7.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^10.12.16",
     "intl-messageformat": "^10.1.0",
