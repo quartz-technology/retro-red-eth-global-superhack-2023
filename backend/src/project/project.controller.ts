@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post } from '@nestjs/common';
 import { ProjectService } from './project.service';
-import { ApiOperation, ApiResponse, getSchemaPath } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ProjectDto } from './dto/ProjectDto';
 
 @Controller('project')
