@@ -12,8 +12,17 @@ import {Card, CardFooter, CardHeader} from "@nextui-org/card";
 import {Image} from "@nextui-org/image";
 import {IdentityIcon} from "@/components/icons";
 import {Spacer} from "@nextui-org/spacer";
+import {Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/dropdown";
+import {Divider} from "@nextui-org/divider";
+import {Link} from "@nextui-org/link";
 
 export default function Home() {
+	const [selectedKeys, setSelectedKeys] = React.useState(new Set(["score"]));
+	const selectedValue = React.useMemo(
+		() => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
+		[selectedKeys]
+	);
+
 	const disclosure = useDisclosure();
 	const projects: ProjectsDetails[] = [
 		{
@@ -72,7 +81,42 @@ export default function Home() {
 
 	return (
 		<div>
-
+			<div className={"flex flex-row items-center justify-between"}>
+				<div className={"flex flex-row items-center"}>
+					<p className={"font-bold"}>Sort by</p>
+					<Spacer x={2} />
+					<Dropdown>
+						<DropdownTrigger>
+							<Button
+								variant="bordered"
+								className="capitalize"
+							>
+								{selectedValue}
+							</Button>
+						</DropdownTrigger>
+						<DropdownMenu
+							aria-label="Single selection actions"
+							variant="flat"
+							disallowEmptySelection
+							selectionMode="single"
+							selectedKeys={selectedKeys}
+							onSelectionChange={(keys) => {
+								setSelectedKeys(keys as Set<string>);
+							}}
+						>
+							<DropdownItem key="score">Score</DropdownItem>
+							<DropdownItem key="upvotes">Upvotes</DropdownItem>
+							<DropdownItem key="random">Random</DropdownItem>
+						</DropdownMenu>
+					</Dropdown>
+				</div>
+				<Button color={"primary"} variant={"bordered"}>
+					Download Bulk Data
+				</Button>
+			</div>
+			<Spacer y={2} />
+			<Divider />
+			<Spacer y={2} />
 			<div className={"grid grid-cols-12 grid-rows-2 gap-4"}>
 				{projects.map((props, id) => {
 					return (
