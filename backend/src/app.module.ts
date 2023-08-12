@@ -8,15 +8,24 @@ import { ProjectModule } from './project/project.module';
 import { GithubModule } from './github/github.module';
 import { DefillamaModule } from './defillama/defillama.module';
 import { FetcherModule } from './fetcher/fetcher.module';
+import { EasModule } from './eas/eas.module';
+import { AttesterModule } from './attester/attester.module';
 import appConfig from './config/app';
 import databaseConfig from './config/database';
 import indexerConfig from './config/indexer';
 import fetcherConfig from './config/fetcher';
+import attesterConfig from './config/attester';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [appConfig, databaseConfig, indexerConfig, fetcherConfig],
+      load: [
+        appConfig,
+        databaseConfig,
+        indexerConfig,
+        fetcherConfig,
+        attesterConfig,
+      ],
       isGlobal: true,
     }),
     DatabaseModule,
@@ -27,6 +36,8 @@ import fetcherConfig from './config/fetcher';
     GithubModule,
     DefillamaModule,
     FetcherModule,
+    EasModule,
+    AttesterModule,
   ],
 })
 export class AppModule {}
