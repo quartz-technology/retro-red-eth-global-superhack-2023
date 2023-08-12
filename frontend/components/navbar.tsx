@@ -15,6 +15,7 @@ import {
 import {MetaMaskConnector} from "@wagmi/connectors/metaMask";
 import {optimism} from "@wagmi/chains";
 import {GithubIcon, LogoutIcon} from "@/components/icons";
+import RetroRedSDK from "@/app/sdk";
 
 export const Navbar = () => {
 	const { address, isConnected } = useAccount()
@@ -27,6 +28,7 @@ export const Navbar = () => {
 	});
 	const { disconnect } = useDisconnect();
 	const { data: ensName } = useEnsName({ address });
+	const sdk = new RetroRedSDK();
 
 	return (
 		<NextUINavbar maxWidth="xl" position="sticky" isBordered={true} isBlurred={true}>
@@ -48,10 +50,14 @@ export const Navbar = () => {
 							<DropdownMenu variant="shadow" aria-label="Static Actions">
 								<DropdownSection title={"Actions"} showDivider>
 									<DropdownItem
-										description={"Link your GitHub account"}
-										startContent={<GithubIcon />}
+										description={"Link your Gitcoin passport"}
+										onClick={async () => {
+											if (address) {
+												await sdk.submitPassport(address);
+											}
+										}}
 									>
-										Link GitHub
+										Link Gitcoin
 									</DropdownItem>
 								</DropdownSection>
 								<DropdownSection title={"Profile"}>
