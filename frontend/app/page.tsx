@@ -4,21 +4,17 @@ import React from "react";
 import {Button} from "@nextui-org/button";
 import {
 	ProjectDetailsModal,
-	ProjectDetailsModalProps,
 	ProjectsDetails
 } from "@/components/projectDetailsModal";
 import {useDisclosure} from "@nextui-org/modal";
-import {Card, CardFooter, CardHeader} from "@nextui-org/card";
-import {Image} from "@nextui-org/image";
+import {Card, CardFooter} from "@nextui-org/card";
 import {IdentityIcon} from "@/components/icons";
 import {Spacer} from "@nextui-org/spacer";
 import {Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/dropdown";
 import {Divider} from "@nextui-org/divider";
-import {Link} from "@nextui-org/link";
-import RetroRedSDK from "@/app/sdk";
 
 export default function Home() {
-	const [selectedKeys, setSelectedKeys] = React.useState(new Set(["score"]));
+	const [selectedKeys, setSelectedKeys] = React.useState(new Set(["upvotes"]));
 	const selectedValue = React.useMemo(
 		() => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
 		[selectedKeys]
@@ -29,11 +25,76 @@ export default function Home() {
 	const [selectedProject, setSelectedProject] = React.useState(0);
 
 	React.useEffect(() => {
+		/*
 		(async () => {
 			const sdk = new RetroRedSDK();
 
 			setProjects(await sdk.getProjects() ?? []);
 		})();
+		*/
+		let data = [
+			{
+				id: 0,
+				easAttestation: "string",
+				name: "ethers.js",
+				githubRepos: ["string"],
+				defiLlamaId: "string",
+				addresses: ["string"],
+				totalTransactions: 42,
+				gasUsed: 42,
+				tvl: 42,
+				githubStars: 42,
+				githubActivity: 42,
+				upvotes: 42,
+			},
+			{
+				id: 1,
+				easAttestation: "string",
+				name: "arken.fi",
+				githubRepos: ["string"],
+				defiLlamaId: "string",
+				addresses: ["string"],
+				totalTransactions: 42,
+				gasUsed: 42,
+				tvl: 42,
+				githubStars: 42,
+				githubActivity: 42,
+				upvotes: 84,
+			},
+			{
+				id: 2,
+				easAttestation: "string",
+				name: "uniswap",
+				githubRepos: ["string"],
+				defiLlamaId: "string",
+				addresses: ["string"],
+				totalTransactions: 42,
+				gasUsed: 42,
+				tvl: 42,
+				githubStars: 42,
+				githubActivity: 42,
+				upvotes: 0,
+			},
+			{
+				id: 3,
+				easAttestation: "string",
+				name: "foundry",
+				githubRepos: ["string"],
+				defiLlamaId: "string",
+				addresses: ["string"],
+				totalTransactions: 42,
+				gasUsed: 42,
+				tvl: 42,
+				githubStars: 42,
+				githubActivity: 42,
+				upvotes: 12,
+			},
+		];
+
+		data = data.sort((a, b) => {
+			return b.upvotes - a.upvotes;
+		});
+		setProjects(data);
 	}, []);
 
 	return (
@@ -59,9 +120,16 @@ export default function Home() {
 							selectedKeys={selectedKeys}
 							onSelectionChange={(keys) => {
 								setSelectedKeys(keys as Set<string>);
+
+								if ((keys as Set<string>).values().next().value as string === "random") {
+									setProjects(projects.sort((a, b) => 0.5 - Math.random()));
+								} else {
+									setProjects(projects.sort((a, b) => {
+										return b.upvotes - a.upvotes;
+									}));
+								}
 							}}
 						>
-							<DropdownItem key="score">Score</DropdownItem>
 							<DropdownItem key="upvotes">Upvotes</DropdownItem>
 							<DropdownItem key="random">Random</DropdownItem>
 						</DropdownMenu>
