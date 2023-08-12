@@ -12,7 +12,7 @@ export class EasService {
 
     this.eas = new EAS(EASContractAddress);
 
-    const jsonRpcUrl = this.configService.get('indexer.jsonRpcUrl');
+    const jsonRpcUrl = this.configService.get('attester.jsonRpcUrl');
     const provider = new ethers.JsonRpcProvider(jsonRpcUrl);
     const signer = new ethers.Wallet(
       this.configService.get('attester.privateKey'),
@@ -82,9 +82,11 @@ export class EasService {
         revocable: false,
         data: encodedData,
       },
-    });
+    }, { gasLimit: 1000000 });
 
     const newAttestationUID = await tx.wait();
+
+
 
     return newAttestationUID;
   }
