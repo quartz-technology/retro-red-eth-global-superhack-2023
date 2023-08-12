@@ -18,12 +18,13 @@ import {Chip} from "@nextui-org/chip";
 import {Tooltip} from "@nextui-org/tooltip";
 
 export interface ProjectsDetails {
-    easLink: string;
+    id: number;
     name?: string;
-    githubRepositoryURL?: string;
-    defiLlamaID?: string;
-    contractAddresses?: string[];
-    totalTransactionsCount?: number;
+    easAttestation: string;
+    githubRepos?: string[];
+    defiLlamaId?: string;
+    addresses?: string[];
+    totalTransactions?: number;
     gasUsed?: number;
     tvl?: number;
     githubStars?: number;
@@ -68,7 +69,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                         className={"font-bold text-medium"}
                                         isExternal
                                         showAnchorIcon
-                                        href={`${props.details.easLink}`}
+                                        href={`${props.details.easAttestation}`}
                                     >
                                         View on-chain score attestation.
                                     </Link>
@@ -82,8 +83,8 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                         className={"font-bold text-medium"}
                                         isExternal
                                         showAnchorIcon
-                                        href={`${props.details.easLink}`}
-                                        isDisabled={props.details.githubRepositoryURL === undefined}
+                                        href={`https://github.com/${props.details.githubRepos![0]}`}
+                                        isDisabled={props.details.githubRepos === undefined}
                                     >
                                         Visit source code on GitHub.
                                     </Link>
@@ -91,10 +92,10 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                 <Accordion variant="light" selectionMode={"multiple"} disabledKeys={(() => {
                                     let disabledKeys: string[] = [];
 
-                                    if (props.details.githubRepositoryURL === undefined) {
+                                    if (!props.details.githubRepos) {
                                         disabledKeys.push("1");
                                     }
-                                    if (props.details.contractAddresses === undefined) {
+                                    if (!props.details.addresses) {
                                         disabledKeys.push("2");
                                     }
 
@@ -105,7 +106,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                             <Tooltip color={"primary"} content={
                                                 <div className="px-1 py-2">
                                                     <div className="text-small font-bold">GitHub Stars</div>
-                                                    <div className="text-tiny">The number of stars on the project's GitHub repository</div>
+                                                    <div className="text-tiny">The number of stars on the project&apos;s GitHub repository</div>
                                                 </div>
                                             }>
                                                 <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.details.githubStars} ⭐️</Chip>
@@ -129,7 +130,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                                     <div className="text-tiny">The total number of transactions made to this contract</div>
                                                 </div>
                                             }>
-                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.details.totalTransactionsCount} 🧾</Chip>
+                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.details.totalTransactions} 🧾</Chip>
                                             </Tooltip>
                                             <Spacer x={2} />
                                             <Tooltip color={"primary"} content={
