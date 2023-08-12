@@ -13,7 +13,7 @@ import {Divider} from "@nextui-org/divider";
 import {Image} from "@nextui-org/image";
 import {Spacer} from "@nextui-org/spacer";
 import {Accordion, AccordionItem} from "@nextui-org/accordion";
-import {GithubIcon} from "@/components/icons";
+import {GithubIcon, HeartIcon} from "@/components/icons";
 import {Chip} from "@nextui-org/chip";
 import {Tooltip} from "@nextui-org/tooltip";
 
@@ -25,10 +25,11 @@ export interface ProjectDetailsModalProps {
     defiLlamaID?: string;
     contractAddresses?: string[];
     totalTransactionsCount?: number;
-    weiUsed?: number;
+    gasUsed?: number;
     tvl?: number;
     githubStars?: number;
     githubActivity?: number;
+    upvotes: number;
 }
 
 export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
@@ -117,7 +118,38 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                     </div>
                                     </AccordionItem>
                                     <AccordionItem key="2" aria-label="On-Chain Statistics" title="On-Chain Statistics">
-                                        test
+                                        <div className={"flex items-center mb-5"}>
+                                            <Tooltip color={"primary"} content={
+                                                <div className="px-1 py-2">
+                                                    <div className="text-small font-bold">Transaction Count</div>
+                                                    <div className="text-tiny">The total number of transactions made to this contract</div>
+                                                </div>
+                                            }>
+                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.totalTransactionsCount} 🧾</Chip>
+                                            </Tooltip>
+                                            <Spacer x={2} />
+                                            <Tooltip color={"primary"} content={
+                                                <div className="px-1 py-2">
+                                                    <div className="text-small font-bold">Total Gas Used</div>
+                                                    <div className="text-tiny">The total amount of gas consumed by this contract</div>
+                                                </div>
+                                            }>
+                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.gasUsed} ⛽️</Chip>
+                                            </Tooltip>
+                                            {props.tvl &&
+                                                <>
+                                                    <Spacer x={2} />
+                                                    <Tooltip color={"primary"} content={
+                                                        <div className="px-1 py-2">
+                                                            <div className="text-small font-bold">Total Value Locked</div>
+                                                            <div className="text-tiny">The total value locked by this protocol according to DeFi Llama</div>
+                                                        </div>
+                                                    }>
+                                                        <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.tvl} 💵</Chip>
+                                                    </Tooltip>
+                                                </>
+                                            }
+                                        </div>
                                     </AccordionItem>
                                 </Accordion>
                             </ModalBody>
@@ -125,8 +157,8 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                 <Button color="danger" variant="light" onClick={onClose}>
                                     Close
                                 </Button>
-                                <Button color="primary" onPress={onLike}>
-                                    Like
+                                <Button color="primary" onPress={onLike} startContent={<HeartIcon />}>
+                                    {props.upvotes}
                                 </Button>
                             </ModalFooter>
                         </>
