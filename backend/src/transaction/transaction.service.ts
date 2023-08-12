@@ -52,6 +52,7 @@ export class TransactionService {
   }
 
   async countByContractAddress(contractAddress: string) {
+    contractAddress = contractAddress.toLowerCase();
     return await this.transactionRepository.count({
       where: {
         to: contractAddress,
@@ -60,6 +61,7 @@ export class TransactionService {
   }
 
   async sumGasUsedByContractAddress(contractAddress: string): Promise<bigint> {
+    contractAddress = contractAddress.toLowerCase();
     const gasUsed = await this.transactionRepository
       .createQueryBuilder('transaction')
       .select('transaction.gasUsed')
