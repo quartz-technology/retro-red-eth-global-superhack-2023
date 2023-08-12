@@ -17,8 +17,7 @@ import {GithubIcon, HeartIcon} from "@/components/icons";
 import {Chip} from "@nextui-org/chip";
 import {Tooltip} from "@nextui-org/tooltip";
 
-export interface ProjectDetailsModalProps {
-    visibilityProps: UseDisclosureReturn;
+export interface ProjectsDetails {
     easLink: string;
     name?: string;
     githubRepositoryURL?: string;
@@ -30,6 +29,11 @@ export interface ProjectDetailsModalProps {
     githubStars?: number;
     githubActivity?: number;
     upvotes: number;
+}
+
+export interface ProjectDetailsModalProps {
+    visibilityProps: UseDisclosureReturn;
+    details: ProjectsDetails;
 }
 
 export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
@@ -49,7 +53,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">{props.name}</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">{props.details.name}</ModalHeader>
                             <Divider />
                             <ModalBody>
                                 <p className={"text-center font-bold text-2xl m-3"}>✨ Score: {getScore()}</p>
@@ -64,7 +68,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                         className={"font-bold text-medium"}
                                         isExternal
                                         showAnchorIcon
-                                        href={`${props.easLink}`}
+                                        href={`${props.details.easLink}`}
                                     >
                                         View on-chain score attestation.
                                     </Link>
@@ -78,8 +82,8 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                         className={"font-bold text-medium"}
                                         isExternal
                                         showAnchorIcon
-                                        href={`${props.easLink}`}
-                                        isDisabled={props.githubRepositoryURL === undefined}
+                                        href={`${props.details.easLink}`}
+                                        isDisabled={props.details.githubRepositoryURL === undefined}
                                     >
                                         Visit source code on GitHub.
                                     </Link>
@@ -87,10 +91,10 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                 <Accordion variant="light" selectionMode={"multiple"} disabledKeys={(() => {
                                     let disabledKeys: string[] = [];
 
-                                    if (props.githubRepositoryURL === undefined) {
+                                    if (props.details.githubRepositoryURL === undefined) {
                                         disabledKeys.push("1");
                                     }
-                                    if (props.contractAddresses === undefined) {
+                                    if (props.details.contractAddresses === undefined) {
                                         disabledKeys.push("2");
                                     }
 
@@ -104,7 +108,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                                     <div className="text-tiny">The number of stars on the project's GitHub repository</div>
                                                 </div>
                                             }>
-                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.githubStars} ⭐️</Chip>
+                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.details.githubStars} ⭐️</Chip>
                                             </Tooltip>
                                             <Spacer x={2} />
                                             <Tooltip color={"primary"} content={
@@ -113,7 +117,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                                     <div className="text-tiny">The number of commits made during the last 15 days</div>
                                                 </div>
                                             }>
-                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.githubActivity} 🐙</Chip>
+                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.details.githubActivity} 🐙</Chip>
                                             </Tooltip>
                                     </div>
                                     </AccordionItem>
@@ -125,7 +129,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                                     <div className="text-tiny">The total number of transactions made to this contract</div>
                                                 </div>
                                             }>
-                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.totalTransactionsCount} 🧾</Chip>
+                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.details.totalTransactionsCount} 🧾</Chip>
                                             </Tooltip>
                                             <Spacer x={2} />
                                             <Tooltip color={"primary"} content={
@@ -134,9 +138,9 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                                     <div className="text-tiny">The total amount of gas consumed by this contract</div>
                                                 </div>
                                             }>
-                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.gasUsed} ⛽️</Chip>
+                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.details.gasUsed} ⛽️</Chip>
                                             </Tooltip>
-                                            {props.tvl &&
+                                            {props.details.tvl &&
                                                 <>
                                                     <Spacer x={2} />
                                                     <Tooltip color={"primary"} content={
@@ -145,7 +149,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                                             <div className="text-tiny">The total value locked by this protocol according to DeFi Llama</div>
                                                         </div>
                                                     }>
-                                                        <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.tvl} 💵</Chip>
+                                                        <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.details.tvl} 💵</Chip>
                                                     </Tooltip>
                                                 </>
                                             }
@@ -158,7 +162,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                     Close
                                 </Button>
                                 <Button color="primary" onPress={onLike} startContent={<HeartIcon />}>
-                                    {props.upvotes}
+                                    {props.details.upvotes}
                                 </Button>
                             </ModalFooter>
                         </>
