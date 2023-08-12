@@ -16,6 +16,6 @@ export class ProjectController {
     project.upvotes += 1;
     await this.projectService.update(id, project);
 
-    return { messages: 'successful', upvotes: project.upvotes }
+    return { message: 'successful', upvotes: project.upvotes };
   }
 }
