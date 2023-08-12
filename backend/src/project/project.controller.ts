@@ -23,6 +23,9 @@ export class ProjectController {
   @Post('vote/:id')
   async vote(@Param('id') id: number) {
     const project = await this.projectService.findOne(id);
+    if (!project) {
+      return { message: 'project not found' };
+    }
     project.upvotes += 1;
     await this.projectService.update(id, project);
 
