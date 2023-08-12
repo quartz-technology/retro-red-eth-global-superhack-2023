@@ -74,18 +74,15 @@ export class EasService {
     const schemaUID =
       '0x4b8e4616589c741810271cd9f348acf92baf5701d6756971c579de76bd0a2933';
 
-    const tx = await this.eas.attest(
-      {
-        schema: schemaUID,
-        data: {
-          recipient: '0x0000000000000000000000000000000000000000',
-          expirationTime: 0n,
-          revocable: false,
-          data: encodedData,
-        },
+    const tx = await this.eas.attest({
+      schema: schemaUID,
+      data: {
+        recipient: '0x0000000000000000000000000000000000000000',
+        expirationTime: 0n,
+        revocable: false,
+        data: encodedData,
       },
-      { gasLimit: 1000000 },
-    );
+    });
 
     const newAttestationUID = await tx.wait();
 
