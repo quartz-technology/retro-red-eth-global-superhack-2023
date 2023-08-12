@@ -16,6 +16,8 @@ import {Accordion, AccordionItem} from "@nextui-org/accordion";
 import {GithubIcon, HeartIcon} from "@/components/icons";
 import {Chip} from "@nextui-org/chip";
 import {Tooltip} from "@nextui-org/tooltip";
+import RetroRedSDK from "@/app/sdk";
+import {useAccount} from "wagmi";
 
 export interface ProjectsDetails {
     id: number;
@@ -38,10 +40,18 @@ export interface ProjectDetailsModalProps {
 }
 
 export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
-    const getScore = () => {
+    const sdk = new RetroRedSDK();
+    const { address, isConnected } = useAccount();
+
+    const getProjectScore = () => {
         return 42;
     };
-    const onLike = () => {};
+    const onLike = async () => {
+        if (address) {
+            const score = await sdk.getScore(address);
+            console.log(score);
+        }
+    };
 
     return (
         <div>
@@ -57,7 +67,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                             <ModalHeader className="flex flex-col gap-1">{props.details.name}</ModalHeader>
                             <Divider />
                             <ModalBody>
-                                <p className={"text-center font-bold text-2xl m-3"}>✨ Score: {getScore()}</p>
+                                <p className={"text-center font-bold text-2xl m-3"}>✨ Score: {getProjectScore()}</p>
                                 <div className={"flex justify-center items-center mb-3"}>
                                     <Image
                                         className={"border-2 p-1 rounded-full border-blue-500"}
