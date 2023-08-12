@@ -10,6 +10,7 @@ import { DefillamaModule } from './defillama/defillama.module';
 import { FetcherModule } from './fetcher/fetcher.module';
 import { EasModule } from './eas/eas.module';
 import { AttesterModule } from './attester/attester.module';
+import { VotesModule } from './votes/votes.module';
 import appConfig from './config/app';
 import databaseConfig from './config/database';
 import indexerConfig from './config/indexer';
@@ -38,6 +39,7 @@ import attesterConfig from './config/attester';
     FetcherModule,
     EasModule,
     AttesterModule,
+    VotesModule,
   ],
 })
 export class AppModule {}
