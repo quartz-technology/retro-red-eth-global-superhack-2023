@@ -180,7 +180,12 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                                                     <div className="text-tiny">The total amount of gas consumed by this contract</div>
                                                 </div>
                                             }>
-                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>{props.details.gasUsed} ⛽️</Chip>
+                                                <Chip size={"lg"} color={"primary"} variant={"shadow"}>
+                                                    {
+                                                        props.details.gasUsed < 1000 ? props.details.gasUsed :
+                                                        `${Math.round(props.details.gasUsed / 1000)}k`
+                                                    } ⛽️
+                                                </Chip>
                                             </Tooltip>
                                             {props.details.tvl &&
                                                 <>
