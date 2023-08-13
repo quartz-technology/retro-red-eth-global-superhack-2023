@@ -168,7 +168,7 @@ class RetroRedSDK {
             schema: schemaUID,
             data: {
                 recipient: "0x0000000000000000000000000000000000000000",
-                expirationTime: 0n,
+                expirationTime: 0,
                 revocable: true, // Be aware that if your schema is not revocable, this MUST be false
                 data: encodedData,
                 refUID,
