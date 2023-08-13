@@ -75,7 +75,7 @@ export const Navbar = () => {
 						</Dropdown>
 						:
 						<Button color={"primary"} onClick={() => {
-							connect()
+							connect();
 						}}>
 							Connect Wallet
 						</Button>

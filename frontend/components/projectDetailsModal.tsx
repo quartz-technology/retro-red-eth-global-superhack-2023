@@ -68,17 +68,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                     await sdk.upvote(props.details.id, props.details.easAttestation);
                     await sdk.confirmUpvote(props.details.id);
                 } else {
-                    console.warn("Gitcoin Passport score is too low")
-                    toast.error(`Gitcoin Passport score is too low`, {
-                        position: "bottom-center",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "dark",
-                    });
+                    console.warn("Gitcoin Passport score is too low");
                 }
             }
         }
@@ -216,7 +206,6 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                     )}
                 </ModalContent>
             </Modal>
-            <ToastContainer />
         </div>
     );
 }
