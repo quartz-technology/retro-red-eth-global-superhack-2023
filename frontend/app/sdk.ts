@@ -26,7 +26,7 @@ class RetroRedSDK {
      * API base URL
      * @private
      */
-    private readonly baseURL = "http://51.158.119.230:3000";
+    private readonly baseURL = "https://api.retrored.dev";
 
     private readonly gitCoinHeaders = {
         'Content-Type': 'application/json',
