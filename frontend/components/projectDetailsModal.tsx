@@ -20,6 +20,7 @@ import RetroRedSDK from "@/app/sdk";
 import {useAccount} from "wagmi";
 import {toast, ToastContainer} from "react-toastify";
 import fa from "@walletconnect/legacy-modal/dist/cjs/browser/languages/fa";
+import {IRetroRedContext, RetroRedContext} from "@/app/context";
 
 export interface ProjectsDetails {
     id: number;
@@ -45,6 +46,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
     const [sdk, setSDK] = React.useState(new RetroRedSDK());
     const [projectScore, setProjectScore] = React.useState(0);
     const { address, isConnected } = useAccount();
+    const { worldID } = React.useContext<IRetroRedContext>(RetroRedContext);
 
     React.useEffect(() => {
         if (props.details) {
@@ -56,6 +58,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
     }, [props, sdk]);
 
     const onLike = async () => {
+        console.log(address);
         if (address) {
             const score = await sdk.getScore(address);
             console.log(score);
@@ -64,7 +67,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
             console.log(hasAlreadyVoted);
 
             if (hasAlreadyVoted === false) {
-                if (score > 20) {
+                if (score >= 20 || worldID.value) {
                     await sdk.upvote(props.details.id, props.details.easAttestation);
                     await sdk.confirmUpvote(props.details.id);
                 } else {

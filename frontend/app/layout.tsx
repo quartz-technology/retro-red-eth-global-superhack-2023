@@ -8,6 +8,7 @@ import clsx from "clsx";
 import React from "react";
 import {createConfig, mainnet, WagmiConfig} from "wagmi";
 import {createPublicClient, http} from "viem";
+import {RetroRedContext} from "@/app/context";
 
 export default function RootLayout({
 	children,
@@ -21,6 +22,7 @@ export default function RootLayout({
 			transport: http()
 		}),
 	})
+	const [isConnectedToWorldID, setIsConnectedToWorldID] = React.useState<boolean>(false);
 
 	return (
 		<html lang="en" suppressHydrationWarning>
@@ -32,6 +34,7 @@ export default function RootLayout({
 				)}
 			>
 				<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+					<RetroRedContext.Provider value={{ worldID: { value: isConnectedToWorldID, setValue: setIsConnectedToWorldID } }}>
 					<WagmiConfig config={config}>
 						<div className="relative flex flex-col h-screen">
 							<Navbar />
@@ -40,6 +43,7 @@ export default function RootLayout({
 							</main>
 						</div>
 					</WagmiConfig>
+					</RetroRedContext.Provider>
 				</Providers>
 			</body>
 		</html>
