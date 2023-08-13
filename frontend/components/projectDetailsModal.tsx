@@ -18,6 +18,8 @@ import {Chip} from "@nextui-org/chip";
 import {Tooltip} from "@nextui-org/tooltip";
 import RetroRedSDK from "@/app/sdk";
 import {useAccount} from "wagmi";
+import {toast, ToastContainer} from "react-toastify";
+import fa from "@walletconnect/legacy-modal/dist/cjs/browser/languages/fa";
 
 export interface ProjectsDetails {
     id: number;
@@ -57,6 +59,28 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
         if (address) {
             const score = await sdk.getScore(address);
             console.log(score);
+
+            const hasAlreadyVoted = await sdk.hasAlreadyVoted(address, props.details.id);
+            console.log(hasAlreadyVoted);
+
+            if (hasAlreadyVoted === false) {
+                if (score > 20) {
+                    await sdk.upvote(props.details.id, props.details.easAttestation);
+                    await sdk.confirmUpvote(props.details.id);
+                } else {
+                    console.warn("Gitcoin Passport score is too low")
+                    toast.error(`Gitcoin Passport score is too low`, {
+                        position: "bottom-center",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                    });
+                }
+            }
         }
     };
 
@@ -187,6 +211,7 @@ export const ProjectDetailsModal = (props: ProjectDetailsModalProps) => {
                     )}
                 </ModalContent>
             </Modal>
+            <ToastContainer />
         </div>
     );
 }
