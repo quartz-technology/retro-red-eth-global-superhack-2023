@@ -1,7 +1,8 @@
 import axios, {AxiosInstance} from "axios";
 import {ProjectsDetails} from "@/components/projectDetailsModal";
 import {ethers} from "ethers";
-import {EAS} from "@ethereum-attestation-service/eas-sdk";
+import {EAS, SchemaEncoder} from "@ethereum-attestation-service/eas-sdk";
+import fa from "@walletconnect/legacy-modal/dist/cjs/browser/languages/fa";
 
 declare global {
     interface Window {
@@ -134,6 +135,60 @@ class RetroRedSDK {
 
         const attestation = await eas.getAttestation(attestationUID);
         return Number("0x" + attestation.data.slice(66, 66 + 64));
+    }
+
+    async hasAlreadyVoted(address: string, projectID: number): Promise<boolean | null> {
+        try {
+            const res = await this.client.get<boolean>(`/votes/hasVoted/${address}/${projectID}`);
+
+            return res.data;
+        } catch (e) {
+            console.error(e);
+            return null;
+        }
+    }
+
+    async upvote(projectID: number, refUID: string){
+        const eas = new EAS("0x4200000000000000000000000000000000000021");
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        // call the provider's `getSigner` API method to start the signing process
+        const signer = await provider.getSigner();
+
+        eas.connect(signer);
+
+        // Initialize SchemaEncoder with the schema string
+        const schemaEncoder = new SchemaEncoder("uint64 projectID");
+        const encodedData = schemaEncoder.encodeData([
+            { name: "projectID", value: projectID, type: "uint64" },
+        ]);
+
+        const schemaUID = "0x0b6e0fd40b66287d3146909e26fa54fdfdc22d64bf2d79cd9aaab67a3f63b9ad";
+
+        const tx = await eas.attest({
+            schema: schemaUID,
+            data: {
+                recipient: "0x0000000000000000000000000000000000000000",
+                expirationTime: 0,
+                revocable: true, // Be aware that if your schema is not revocable, this MUST be false
+                data: encodedData,
+                refUID,
+            },
+        });
+
+        const newAttestationUID = await tx.wait();
+
+        console.log("New attestation UID:", newAttestationUID);
+    }
+
+    async confirmUpvote(projectID: number){
+        try {
+            await this.client.post<boolean>(`/project/vote/${projectID}`);
+
+            return true;
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
     }
 }
 
