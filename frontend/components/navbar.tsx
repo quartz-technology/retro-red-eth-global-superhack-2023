@@ -13,16 +13,16 @@ import {
 	DropdownTrigger
 } from "@nextui-org/dropdown";
 import {MetaMaskConnector} from "@wagmi/connectors/metaMask";
-import {optimism} from "@wagmi/chains";
-import {GithubIcon, LogoutIcon} from "@/components/icons";
+import {optimismGoerli} from "@wagmi/chains";
+import {LogoutIcon} from "@/components/icons";
 import RetroRedSDK from "@/app/sdk";
 
 export const Navbar = () => {
-	const { address, isConnected } = useAccount()
+	const { address, isConnected } = useAccount();
 	const { connect } = useConnect({
 		connector: new MetaMaskConnector({
 			chains: [
-				optimism
+				optimismGoerli
 			]
 		}),
 	});
